@@ -1,4 +1,4 @@
-package com.example.appnotas.ui.theme
+package com.example.appnotas.ui.theme.theme
 
 import androidx.compose.ui.graphics.Color
 

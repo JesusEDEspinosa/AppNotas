@@ -1,4 +1,4 @@
-package com.example.appnotas.pantallas
+package com.example.appnotas.ui.theme.newNote
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
