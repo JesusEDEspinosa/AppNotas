@@ -30,7 +30,7 @@ fun Nueva(
 
     TextField(
         value = textoNota,
-        onValueChange = { },
+        onValueChange = {nuevoTexto -> textoNota = nuevoTexto },
         label = { Text("¿Que deseas escribir?") },
         singleLine = true,
         modifier = modifier
@@ -48,7 +48,7 @@ fun Titulo(
 
     OutlinedTextField(
         value = textoTitulo,
-        onValueChange = { },
+        onValueChange = {nuevoTexto -> textoTitulo = nuevoTexto },
         label = { Text("Título de la nota") },
         singleLine = true,
         modifier = modifier
