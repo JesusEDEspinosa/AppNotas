@@ -1,6 +1,8 @@
 package com.example.appnotas.ui.theme.newNote
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Done
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -9,6 +11,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
@@ -64,6 +67,11 @@ fun PantallaNuevaNota() {
         topBar = {
             NuevaNotaTopBar()
         },
+        // *** CLAVE: Usar el slot floatingActionButton ***
+        floatingActionButton = {
+            BotonGuardar(
+            )
+        },
         content = { paddingValues ->
             Column(
                 modifier = Modifier
@@ -71,9 +79,7 @@ fun PantallaNuevaNota() {
                     .padding(paddingValues)
             ) {
                 Titulo()
-
                 Nueva()
-
                 AgregarRecordatorio()
             }
         }
@@ -118,5 +124,19 @@ fun AgregarRecordatorio(
                 )
             }
         }
+    }
+}
+
+@Composable
+fun BotonGuardar(
+    modifier: Modifier = Modifier
+) {
+    FloatingActionButton(
+        onClick = {},
+        containerColor = Color.Cyan,
+        contentColor = MaterialTheme.colorScheme.onPrimary,
+        modifier = modifier
+    ) {
+        Icon(Icons.Filled.Done, "Agregar nueva nota")
     }
 }

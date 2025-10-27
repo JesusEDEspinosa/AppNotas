@@ -12,6 +12,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.appnotas.ui.theme.newNote.Nueva
+import com.example.appnotas.ui.theme.newNote.PantallaNuevaNota
 import com.example.appnotas.ui.theme.theme.AppNotasTheme
 
 class MainActivity : ComponentActivity() {
@@ -20,7 +22,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             AppNotasTheme {
-                Menu()
+                PantallaNuevaNota()
             }
         }
     }
