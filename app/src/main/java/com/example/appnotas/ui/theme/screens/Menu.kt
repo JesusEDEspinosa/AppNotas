@@ -30,6 +30,8 @@ import com.example.appnotas.ui.theme.NoteViewModel
 import java.text.SimpleDateFormat
 import java.util.*
 import androidx.compose.foundation.clickable
+import androidx.compose.ui.res.stringResource
+import com.example.appnotas.R
 import androidx.compose.ui.text.style.TextDecoration
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -43,7 +45,7 @@ fun MenuScreen(navController: NavController, noteViewModel: NoteViewModel = view
 
     Scaffold(
         topBar = {
-            TopAppBar(title = { Text(text = "Notas") })
+            TopAppBar(title = { Text(text = stringResource(R.string.notes)) })
         },
         floatingActionButton = {
             Box(modifier = Modifier.wrapContentSize(), contentAlignment = Alignment.BottomEnd) {
@@ -55,7 +57,7 @@ fun MenuScreen(navController: NavController, noteViewModel: NoteViewModel = view
                     ) {
                         Column(horizontalAlignment = Alignment.End) {
                             ExtendedFloatingActionButton(
-                                text = { Text("Nota") },
+                                text = { Text(stringResource(R.string.note)) },
                                 icon = { Icon(Icons.Filled.NoteAdd, contentDescription = null) },
                                 onClick = {
                                     navController.navigate("nueva_nota")
@@ -67,7 +69,7 @@ fun MenuScreen(navController: NavController, noteViewModel: NoteViewModel = view
                             )
 
                             ExtendedFloatingActionButton(
-                                text = { Text("Tarea") },
+                                text = { Text(stringResource(R.string.task)) },
                                 icon = { Icon(Icons.Filled.Assignment, contentDescription = null) },
                                 onClick = {
                                     navController.navigate("nueva_tarea")
@@ -84,7 +86,7 @@ fun MenuScreen(navController: NavController, noteViewModel: NoteViewModel = view
                         containerColor = MaterialTheme.colorScheme.primary,
                         contentColor = MaterialTheme.colorScheme.onPrimary
                     ) {
-                        Icon(Icons.Filled.Add, contentDescription = "Agregar")
+                        Icon(Icons.Filled.Add, contentDescription = stringResource(R.string.add_description))
                     }
                 }
             }
@@ -109,8 +111,8 @@ fun MenuScreen(navController: NavController, noteViewModel: NoteViewModel = view
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        if (searchQuery.isBlank()) "No hay notas registradas aún"
-                        else "No se encontraron resultados",
+                        if (searchQuery.isBlank()) stringResource(R.string.no_notes_yet)
+                        else stringResource(R.string.no_results_found),
                         style = MaterialTheme.typography.titleMedium
                     )
                 }
@@ -189,7 +191,7 @@ fun NoteItem(
                     )
                     if (note.tipo == "Nota") {
                         Text(
-                            text = "Nota",
+                            text = stringResource(R.string.note_type_label),
                             style = MaterialTheme.typography.bodySmall,
                             color = Color(0xFF1E88E5)
                         )
@@ -206,7 +208,7 @@ fun NoteItem(
                         onCheckedChange = { onToggleComplete() }
                     )
                     Text(
-                        text = "Tarea",
+                        text = stringResource(R.string.task_type_label),
                         style = MaterialTheme.typography.bodySmall,
                         color = Color(0xFF1E88E5)
                     )
@@ -229,12 +231,12 @@ fun SearchBar(
         onValueChange = onQueryChange,
         modifier = modifier
             .height(50.dp),
-        placeholder = { Text("Buscar...", style = MaterialTheme.typography.bodySmall, color = Color.Gray) },
+        placeholder = { Text(stringResource(R.string.search_placeholder), style = MaterialTheme.typography.bodySmall, color = Color.Gray) },
         leadingIcon = {
-            Icon(Icons.Filled.Search, contentDescription = "Buscar", tint = Color.DarkGray)
+            Icon(Icons.Filled.Search, contentDescription = stringResource(R.string.search_description), tint = Color.DarkGray)
         },
         singleLine = true,
         shape = RoundedCornerShape(12.dp),
 
-    )
+        )
 }

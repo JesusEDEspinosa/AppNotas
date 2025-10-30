@@ -4,7 +4,6 @@ class NoteRepository(
     private val noteDao: NoteDao
 ) {
     fun getAllNotes() = noteDao.getAllNotes()
-    fun getAllTasks() = noteDao.getAllTasks()
 
     fun getNoteById(id: Int) = noteDao.getNoteById(id)
 

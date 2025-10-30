@@ -18,6 +18,8 @@ import androidx.navigation.NavController
 import com.example.appnotas.ui.theme.NoteViewModel
 import com.example.appnotas.ui.theme.NoteViewModelFactory
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.res.stringResource
+import com.example.appnotas.R
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
@@ -28,13 +30,13 @@ import java.util.Locale
 fun DetallesNotaTopBar(tipo: String, onDeleteClick: () -> Unit) {
     TopAppBar(
         title = {
-            Text(text = if (tipo == "Tarea") "Editar Tarea" else "Editar Nota")
+            Text(text = if (tipo == "Tarea") stringResource(R.string.edit_task) else stringResource(R.string.edit_note))
         },
         actions = {
             IconButton(onClick = onDeleteClick) {
                 Icon(
                     imageVector = Icons.Filled.Delete,
-                    contentDescription = "Eliminar nota"
+                    contentDescription = stringResource(R.string.delete_note_description)
                 )
             }
         }
@@ -60,8 +62,8 @@ fun DetallesNotaScreen(
     if (mensajeBorrar) {
         AlertDialog(
             onDismissRequest = { mensajeBorrar = false },
-            title = { Text("Confirmar Eliminación") },
-            text = { Text("¿Estas seguro de eliminar esta nota?") },
+            title = { Text(stringResource(R.string.confirm_deletion_title)) },
+            text = { Text(stringResource(R.string.confirm_deletion_message)) },
             confirmButton = {
                 TextButton(
                     onClick = {
@@ -70,14 +72,14 @@ fun DetallesNotaScreen(
                         navController.popBackStack()
                     }
                 ) {
-                    Text("Aceptar")
+                    Text(stringResource(R.string.accept))
                 }
             },
             dismissButton = {
                 TextButton(
                     onClick = { mensajeBorrar = false }
                 ) {
-                    Text("Cancelar")
+                    Text(stringResource(R.string.cancel))
                 }
             }
         )
@@ -129,7 +131,7 @@ fun DetallesNotaScreen(
                     OutlinedTextField(
                         value = textoTitulo,
                         onValueChange = { textoTitulo = it },
-                        label = { Text("Título") },
+                        label = { Text(stringResource(R.string.title)) },
                         singleLine = true,
                         modifier = Modifier
                             .fillMaxWidth()
@@ -139,7 +141,7 @@ fun DetallesNotaScreen(
                     TextField(
                         value = textoNota,
                         onValueChange = { textoNota = it },
-                        label = { Text("¿Qué deseas escribir?") },
+                        label = { Text(stringResource(R.string.what_to_write)) },
                         modifier = Modifier
                             .fillMaxWidth()
                             .fillMaxHeight(0.5f)
@@ -189,7 +191,7 @@ fun AgregarRecordatorio(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Text(text = "Agregar Recordatorio", style = MaterialTheme.typography.titleMedium)
+            Text(text = stringResource(R.string.add_reminder), style = MaterialTheme.typography.titleMedium)
 
             Switch(
                 checked = estaActivado,
@@ -214,7 +216,7 @@ fun AgregarRecordatorio(
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
                     Text(
-                        text = "Recordatorio: ${formato.format(Date(recordatorio))}"
+                        text = "${stringResource(R.string.reminder_prefix)} ${formato.format(Date(recordatorio))}"
                     )
 
                     Spacer(modifier = Modifier.height(8.dp))
@@ -238,7 +240,7 @@ fun AgregarRecordatorio(
                             )
                             datePicker.show()
                         }) {
-                            Text("Cambiar Fecha")
+                            Text(stringResource(R.string.change_date))
                         }
 
                         Button(onClick = {
@@ -255,7 +257,7 @@ fun AgregarRecordatorio(
                             )
                             timePicker.show()
                         }) {
-                            Text("Cambiar Hora")
+                            Text(stringResource(R.string.change_hour))
                         }
                     }
                 }
@@ -275,6 +277,6 @@ fun BotonGuardarDetalles(
         contentColor = MaterialTheme.colorScheme.onPrimary,
         modifier = modifier
     ) {
-        Icon(Icons.Filled.Done, "Guardar cambios")
+        Icon(Icons.Filled.Done, stringResource(R.string.save_changes))
     }
 }

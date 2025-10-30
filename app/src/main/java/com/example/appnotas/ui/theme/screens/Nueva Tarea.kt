@@ -19,6 +19,8 @@ import androidx.navigation.NavController
 import com.example.appnotas.ui.theme.NoteViewModel
 import com.example.appnotas.ui.theme.NoteViewModelFactory
 import com.example.appnotas.ui.theme.newNote.BotonGuardar
+import androidx.compose.ui.res.stringResource
+import com.example.appnotas.R
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
@@ -29,7 +31,7 @@ import java.util.Locale
 fun NuevaTareaTopBar() {
     TopAppBar(
         title = {
-            Text(text = "Nueva Tarea")
+            Text(text = stringResource(R.string.new_task_title))
         }
     )
 }
@@ -63,7 +65,7 @@ fun NuevaTareaScreen(
                 OutlinedTextField(
                     value = textoTitulo,
                     onValueChange = { textoTitulo = it },
-                    label = { Text("Título de la Tarea") },
+                    label = { Text(stringResource(R.string.task_title_label)) },
                     singleLine = true,
                     modifier = Modifier
                         .fillMaxWidth()
@@ -73,7 +75,7 @@ fun NuevaTareaScreen(
                 TextField(
                     value = textoTarea,
                     onValueChange = { textoTarea = it },
-                    label = { Text("¿Qué deseas escribir?") },
+                    label = { Text(stringResource(R.string.what_to_write)) },
                     modifier = Modifier
                         .fillMaxWidth()
                         .fillMaxHeight(0.5f)
@@ -103,7 +105,7 @@ fun AgregarRecordatorio(modifier: Modifier = Modifier) {
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Text(text = "Agregar Recordatorio", style = MaterialTheme.typography.titleMedium)
+            Text(text = stringResource(R.string.add_reminder), style = MaterialTheme.typography.titleMedium)
 
             Switch(
                 checked = estaActivado,
@@ -116,7 +118,6 @@ fun AgregarRecordatorio(modifier: Modifier = Modifier) {
         if (estaActivado) {
             Spacer(modifier = Modifier.height(8.dp))
 
-            // Card con selector de fecha y hora
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 colors = CardDefaults.cardColors(
@@ -126,9 +127,9 @@ fun AgregarRecordatorio(modifier: Modifier = Modifier) {
                 Column(modifier = Modifier.padding(16.dp)) {
                     Text(
                         text = if (fechaSeleccionada != null)
-                            "Recordatorio: ${formato.format(fechaSeleccionada!!)}"
+                            "${stringResource(R.string.reminder_prefix)} ${formato.format(fechaSeleccionada!!)}"
                         else
-                            "Selecciona fecha y hora"
+                            stringResource(R.string.select_date_and_time)
                     )
 
                     Spacer(modifier = Modifier.height(8.dp))
@@ -152,7 +153,7 @@ fun AgregarRecordatorio(modifier: Modifier = Modifier) {
                             )
                             datePicker.show()
                         }) {
-                            Text("Seleccionar Fecha")
+                            Text(stringResource(R.string.select_date))
                         }
 
                         Button(onClick = {
@@ -169,7 +170,7 @@ fun AgregarRecordatorio(modifier: Modifier = Modifier) {
                             )
                             timePicker.show()
                         }) {
-                            Text("Seleccionar Hora")
+                            Text(stringResource(R.string.select_hour))
                         }
                     }
                 }
@@ -177,4 +178,3 @@ fun AgregarRecordatorio(modifier: Modifier = Modifier) {
         }
     }
 }
-

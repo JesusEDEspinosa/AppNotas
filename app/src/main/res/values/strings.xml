@@ -1,4 +1,39 @@
 <resources>
-    <string name="notas">Notas</string>
     <string name="app_name">AppNotas</string>
+
+    <string name="notes">Notas</string>
+    <string name="note">Nota</string>
+    <string name="task">Tarea</string>
+    <string name="add_description">Agregar</string>
+    <string name="no_notes_yet">No hay notas registradas aún</string>
+    <string name="no_results_found">No se encontraron resultados</string>
+    <string name="note_type_label">Nota</string>
+    <string name="task_type_label">Tarea</string>
+    <string name="search_placeholder">Buscar...</string>
+    <string name="search_description">Buscar</string>
+
+    <string name="new_note_title">Nueva Nota</string>
+    <string name="note_title_label">Título de la nota</string>
+    <string name="what_to_write">¿Qué deseas escribir?</string>
+    <string name="add_new_note_description">Agregar nueva nota</string>
+
+    <string name="new_task_title">Nueva Tarea</string>
+    <string name="task_title_label">Título de la Tarea</string>
+    <string name="select_date_and_time">Selecciona fecha y hora</string>
+    <string name="select_date">Seleccionar Fecha</string>
+    <string name="select_hour">Seleccionar Hora</string>
+
+    <string name="edit_task">Editar Tarea</string>
+    <string name="edit_note">Editar Nota</string>
+    <string name="delete_note_description">Eliminar nota</string>
+    <string name="confirm_deletion_title">Confirmar Eliminación</string>
+    <string name="confirm_deletion_message">¿Estas seguro de eliminar esta nota?</string>
+    <string name="accept">Aceptar</string>
+    <string name="cancel">Cancelar</string>
+    <string name="title">Título</string>
+    <string name="add_reminder">Agregar Recordatorio</string>
+    <string name="reminder_prefix">Recordatorio:</string>
+    <string name="change_date">Cambiar Fecha</string>
+    <string name="change_hour">Cambiar Hora</string>
+    <string name="save_changes">Guardar cambios</string>
 </resources>

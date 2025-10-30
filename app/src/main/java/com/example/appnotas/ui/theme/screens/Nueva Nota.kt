@@ -14,13 +14,15 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.appnotas.ui.theme.NoteViewModel
 import com.example.appnotas.ui.theme.NoteViewModelFactory
+import androidx.compose.ui.res.stringResource
+import com.example.appnotas.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NuevaNotaTopBar() {
     TopAppBar(
         title = {
-            Text(text = "Nueva Nota")
+            Text(text = stringResource(R.string.new_note_title))
         }
     )
 }
@@ -54,7 +56,7 @@ fun NuevaNotaScreen(
                 OutlinedTextField(
                     value = textoTitulo,
                     onValueChange = { textoTitulo = it },
-                    label = { Text("Título de la nota") },
+                    label = { Text(stringResource(R.string.note_title_label)) },
                     singleLine = true,
                     modifier = Modifier
                         .fillMaxWidth()
@@ -64,7 +66,7 @@ fun NuevaNotaScreen(
                 TextField(
                     value = textoNota,
                     onValueChange = { textoNota = it },
-                    label = { Text("¿Qué deseas escribir?") },
+                    label = { Text(stringResource(R.string.what_to_write)) },
                     modifier = Modifier
                         .fillMaxWidth()
                         .fillMaxHeight(0.5f)
@@ -88,6 +90,6 @@ fun BotonGuardar(
         contentColor = MaterialTheme.colorScheme.onPrimary,
         modifier = modifier
     ) {
-        Icon(Icons.Filled.Done, "Agregar nueva nota")
+        Icon(Icons.Filled.Done, stringResource(R.string.add_new_note_description))
     }
 }
