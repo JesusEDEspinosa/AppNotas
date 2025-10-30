@@ -29,6 +29,7 @@ import com.example.appnotas.data.local.Note
 import com.example.appnotas.ui.theme.NoteViewModel
 import java.text.SimpleDateFormat
 import java.util.*
+import androidx.compose.foundation.clickable
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -114,7 +115,12 @@ fun MenuScreen(navController: NavController, noteViewModel: NoteViewModel = view
                         .padding(8.dp)
                 ) {
                     items(notes) { note ->
-                        NoteItem(note)
+                        NoteItem(
+                            note = note,
+                            onNoteClick = {
+                                navController.navigate("detalles_nota/${note.id}")
+                            }
+                        )
                     }
                 }
             }
@@ -123,13 +129,14 @@ fun MenuScreen(navController: NavController, noteViewModel: NoteViewModel = view
 }
 
 @Composable
-fun NoteItem(note: Note) {
+fun NoteItem(note: Note, onNoteClick: () -> Unit) {
     val dateFormat = remember { SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault()) }
 
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 4.dp),
+            .padding(vertical = 4.dp)
+            .clickable { onNoteClick() },
         shape = RoundedCornerShape(12.dp),
         elevation = CardDefaults.cardElevation(4.dp)
     ) {

@@ -50,5 +50,19 @@ class NoteViewModel(application: Application) : AndroidViewModel(application) {
             repository.insert(newNote)
         }
     }
+    fun getNoteById(id: Int): Flow<Note?> {
+        return repository.getNoteById(id)
+    }
+    fun updateNoteDetails(id: Int, newTitle: String, newContent: String, oldNote: Note) {
+        viewModelScope.launch {
+            val updatedNote = oldNote.copy(
+                id = id,
+                title = newTitle,
+                content = newContent
+            )
+            repository.update(updatedNote)
+        }
+    }
+
 }
 
