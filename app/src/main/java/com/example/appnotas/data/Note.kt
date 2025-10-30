@@ -10,5 +10,6 @@ data class Note(
     val content: String,
     val dateCreated: Long = System.currentTimeMillis(),
     val tipo: String,
-    val recordatorio: Long? = null
+    val recordatorio: Long? = null,
+    val completa: Boolean = false
 )

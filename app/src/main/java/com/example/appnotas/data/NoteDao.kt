@@ -22,7 +22,7 @@ interface NoteDao {
     @Query("SELECT * FROM notes ORDER BY dateCreated DESC")
     fun getAllNotes(): Flow<List<Note>>
 
-    @Query("SELECT * FROM notes WHERE tipo = 'tarea' ORDER BY recordatorio ASC")
+    @Query("SELECT * FROM notes WHERE tipo = 'tarea' ORDER BY completa ASC, recordatorio ASC") // <-- MODIFICA ESTA LÍNEA
     fun getAllTasks(): Flow<List<Note>>
 
     @Query("SELECT * FROM notes WHERE id = :noteId")

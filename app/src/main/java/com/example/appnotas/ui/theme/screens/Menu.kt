@@ -30,13 +30,16 @@ import com.example.appnotas.ui.theme.NoteViewModel
 import java.text.SimpleDateFormat
 import java.util.*
 import androidx.compose.foundation.clickable
+import androidx.compose.ui.text.style.TextDecoration
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MenuScreen(navController: NavController, noteViewModel: NoteViewModel = viewModel()) {
     var menuAbierto by remember { mutableStateOf(false) }
 
-    val notes by noteViewModel.allNotes.collectAsState(initial = emptyList())
+    val notes by noteViewModel.filteredNotes.collectAsState()
+
+    val searchQuery by noteViewModel.searchQuery.collectAsState()
 
     Scaffold(
         topBar = {
@@ -93,6 +96,8 @@ fun MenuScreen(navController: NavController, noteViewModel: NoteViewModel = view
                 .padding(innerPadding)
         ) {
             SearchBar(
+                query = searchQuery,
+                onQueryChange = { noteViewModel.onSearchQueryChange(it) }, // Conecta al ViewModel
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp, vertical = 8.dp)
@@ -104,7 +109,8 @@ fun MenuScreen(navController: NavController, noteViewModel: NoteViewModel = view
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        "No hay notas registradas aún",
+                        if (searchQuery.isBlank()) "No hay notas registradas aún"
+                        else "No se encontraron resultados",
                         style = MaterialTheme.typography.titleMedium
                     )
                 }
@@ -119,6 +125,9 @@ fun MenuScreen(navController: NavController, noteViewModel: NoteViewModel = view
                             note = note,
                             onNoteClick = {
                                 navController.navigate("detalles_nota/${note.id}")
+                            },
+                            onToggleComplete = {
+                                noteViewModel.taskCompletion(note)
                             }
                         )
                     }
@@ -129,65 +138,103 @@ fun MenuScreen(navController: NavController, noteViewModel: NoteViewModel = view
 }
 
 @Composable
-fun NoteItem(note: Note, onNoteClick: () -> Unit) {
+fun NoteItem(
+    note: Note,
+    onNoteClick: () -> Unit,
+    onToggleComplete: () -> Unit
+) {
     val dateFormat = remember { SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault()) }
+
+    val textColor = if (note.completa) Color.Gray else Color.DarkGray
+    val textDecoration = if (note.completa) TextDecoration.LineThrough else null
 
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 4.dp)
-            .clickable { onNoteClick() },
+            .padding(vertical = 4.dp),
         shape = RoundedCornerShape(12.dp),
         elevation = CardDefaults.cardElevation(4.dp)
     ) {
-        Column(
+        Row(
             modifier = Modifier
-                .padding(12.dp)
+                .clickable { onNoteClick() }
+                .padding(12.dp),
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(
-                text = note.title,
-                style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold)
-            )
-            Spacer(modifier = Modifier.height(4.dp))
-            Text(
-                text = note.content.take(80) + if (note.content.length > 80) "..." else "",
-                style = MaterialTheme.typography.bodyMedium,
-                color = Color.DarkGray
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-            Row(
-                horizontalArrangement = Arrangement.SpaceBetween,
-                modifier = Modifier.fillMaxWidth()
+            Column(
+                modifier = Modifier.weight(1f)
             ) {
                 Text(
-                    text = dateFormat.format(Date(note.dateCreated)),
-                    style = MaterialTheme.typography.bodySmall,
-                    color = Color.Gray
+                    text = note.title,
+                    style = MaterialTheme. typography.titleMedium.copy(fontWeight = FontWeight.Bold),
+                    color = if (note.completa) Color.Gray else MaterialTheme.colorScheme.onSurface,
+                    textDecoration = textDecoration
                 )
+                Spacer(modifier = Modifier.height(4.dp))
                 Text(
-                    text = note.tipo.replaceFirstChar { it.uppercase() },
-                    style = MaterialTheme.typography.bodySmall,
-                    color = if (note.tipo == "tarea") Color(0xFF1E88E5) else Color(0xFF43A047)
+                    text = note.content.take(80) + if (note.content.length > 80) "..." else "",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = textColor,
+                    textDecoration = textDecoration
                 )
+                Spacer(modifier = Modifier.height(8.dp))
+                Row(
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text(
+                        text = dateFormat.format(Date(note.dateCreated)),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = Color.Gray
+                    )
+                    if (note.tipo == "Nota") {
+                        Text(
+                            text = "Nota",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = Color(0xFF1E88E5)
+                        )
+                    }
+                }
+            }
+            if (note.tipo == "Tarea") {
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier.padding(start = 12.dp)
+                ) {
+                    Checkbox(
+                        checked = note.completa,
+                        onCheckedChange = { onToggleComplete() }
+                    )
+                    Text(
+                        text = "Tarea",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = Color(0xFF1E88E5)
+                    )
+                }
             }
         }
     }
 }
 
+
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SearchBar(modifier: Modifier = Modifier) {
-    Row(
+fun SearchBar(
+    query: String,
+    onQueryChange: (String) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    OutlinedTextField(
+        value = query,
+        onValueChange = onQueryChange,
         modifier = modifier
-            .background(Color(0xFFEDEDED), RoundedCornerShape(8.dp))
-            .height(40.dp)
-            .padding(horizontal = 12.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Text(
-            text = "Buscar...",
-            color = Color.Gray,
-            modifier = Modifier.weight(1f)
-        )
-        Icon(Icons.Filled.Search, contentDescription = "Buscar", tint = Color.DarkGray)
-    }
+            .height(50.dp),
+        placeholder = { Text("Buscar...", style = MaterialTheme.typography.bodySmall, color = Color.Gray) },
+        leadingIcon = {
+            Icon(Icons.Filled.Search, contentDescription = "Buscar", tint = Color.DarkGray)
+        },
+        singleLine = true,
+        shape = RoundedCornerShape(12.dp),
+
+    )
 }

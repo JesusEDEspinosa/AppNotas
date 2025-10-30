@@ -9,6 +9,12 @@ import com.example.appnotas.data.local.Note
 import com.example.appnotas.data.local.NoteRepository
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.stateIn
 
 class NoteViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -22,6 +28,29 @@ class NoteViewModel(application: Application) : AndroidViewModel(application) {
     private val repository = NoteRepository(database.noteDao())
 
     val allNotes: Flow<List<Note>> = repository.getAllNotes()
+
+    private val _searchQuery = MutableStateFlow("")
+    val searchQuery = _searchQuery.asStateFlow()
+
+    fun onSearchQueryChange(newQuery: String) {
+        _searchQuery.value = newQuery
+    }
+
+    val filteredNotes: StateFlow<List<Note>> =
+        searchQuery.combine(allNotes) { query, notes ->
+            if (query.isBlank()) {
+                notes
+            } else {
+                notes.filter {
+                    it.title.contains(query, ignoreCase = true) ||
+                            it.content.contains(query, ignoreCase = true)
+                }
+            }
+        }.stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000L), // Inicia después de 5s de inactividad
+            initialValue = emptyList()
+        )
 
     fun insertNote(title: String, content: String, tipo: String, recordatorio: Long? = null) {
         viewModelScope.launch {
@@ -61,6 +90,15 @@ class NoteViewModel(application: Application) : AndroidViewModel(application) {
     fun deleteNote(note: Note) {
         viewModelScope.launch {
             repository.delete(note)
+        }
+    }
+
+    fun taskCompletion(note: Note) {
+        if (note.tipo == "Tarea") {
+            viewModelScope.launch {
+                val updatedNote = note.copy(completa = !note.completa)
+                repository.update(updatedNote)
+            }
         }
     }
 
