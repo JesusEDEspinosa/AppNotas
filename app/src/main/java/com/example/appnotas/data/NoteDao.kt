@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
+import androidx.room.Delete
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -14,6 +15,9 @@ interface NoteDao {
 
     @Update
     suspend fun update(note: Note)
+
+    @Delete
+    suspend fun delete(note: Note)
 
     @Query("SELECT * FROM notes ORDER BY dateCreated DESC")
     fun getAllNotes(): Flow<List<Note>>

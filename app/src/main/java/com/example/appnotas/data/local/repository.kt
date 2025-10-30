@@ -16,4 +16,8 @@ class NoteRepository(
         noteDao.update(note)
     }
 
+    suspend fun delete(note: Note) {
+        noteDao.delete(note)
+    }
+
 }

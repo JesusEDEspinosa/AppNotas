@@ -22,7 +22,6 @@ class NoteViewModel(application: Application) : AndroidViewModel(application) {
     private val repository = NoteRepository(database.noteDao())
 
     val allNotes: Flow<List<Note>> = repository.getAllNotes()
-    val allTasks: Flow<List<Note>> = repository.getAllTasks()
 
     fun insertNote(title: String, content: String, tipo: String, recordatorio: Long? = null) {
         viewModelScope.launch {
@@ -37,30 +36,31 @@ class NoteViewModel(application: Application) : AndroidViewModel(application) {
             repository.insert(newNote)
         }
     }
-    fun insertTarea(title: String, content: String, tipo: String, recordatorio: Long? = null) {
-        viewModelScope.launch {
-            val now = System.currentTimeMillis()
-            val newNote = Note(
-                title = title,
-                content = content,
-                dateCreated = now,
-                tipo = tipo,
-                recordatorio = recordatorio
-            )
-            repository.insert(newNote)
-        }
-    }
+
     fun getNoteById(id: Int): Flow<Note?> {
         return repository.getNoteById(id)
     }
-    fun updateNoteDetails(id: Int, newTitle: String, newContent: String, oldNote: Note) {
+    fun updateNote(
+        id: Int,
+        newTitle: String,
+        newContent: String,
+        newRecordatorio: Long?,
+        oldNote: Note
+    ) {
         viewModelScope.launch {
             val updatedNote = oldNote.copy(
                 id = id,
                 title = newTitle,
-                content = newContent
+                content = newContent,
+                recordatorio = newRecordatorio
             )
             repository.update(updatedNote)
+        }
+    }
+
+    fun deleteNote(note: Note) {
+        viewModelScope.launch {
+            repository.delete(note)
         }
     }
 
